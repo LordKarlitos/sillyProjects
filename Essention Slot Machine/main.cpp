@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int roll(){
+int roll(){ //random
     int value = rand() % 6 + 1;
     return(value);
 }
@@ -18,23 +18,24 @@ int main(){
     /*Because this project is made for something bigger (my board-computer game) you can not only get money, 
     but also other stuff, such as weapons, resources, or cosmetic items. Lets say it works more like 
     lootbox system, than a real slot machine in casino.*/
+    //const list
     string RESOURCES[5] = {"20 Mana","20 Fotons","10 Esoteric Candles","10 Binary Cents","15 Cast Iron Denarii"};
     string COUPONS[6] = {"Blamage Coupon","Discount Coupon","Casino Coupon","Recrutation Coupon","Elemental Coupon","Coupon of Coupons"};
     string OTHER[2] = {"Random Tray Background", "Random Regular Chest"};
     while(true){
-        cout << "Type 's' to spin. Type anything else to end: ";
+        cout << "Type 's' to spin. Type anything else to end: "; //asking
         cin >> cont;
         if(cont != "s"){
             cout << "Exit." << endl;
             break;
         }
-        roll1 = roll();
+        roll1 = roll();//rolling
         roll2 = roll();
         roll3 = roll();
-        
+        //display
         cout << "[ "<<roll1<<" ]-[ "<<roll2<<" ]-[ "<<roll3<<" ]"<<endl;
 
-        if(roll1 == roll2 && roll2 == roll3){
+        if(roll1 == roll2 && roll2 == roll3){//winning
             
             cout << "You won and got: ";
             switch(roll1){
