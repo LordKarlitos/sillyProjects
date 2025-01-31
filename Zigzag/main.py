@@ -5,11 +5,11 @@ def createZigzag(listCount, elements, starting = 0):
         singleList = []
         for j in range(elements):
             iter+=1
-            singleList.append(iter)
+            singleList.append(iter) # adding numbers
 
 
-        if (i % 2 != 0):
-            temp = singleList
+        if (i % 2 != 0): #reversing
+            temp = singleList 
             singleList = []
             for j in range(elements):
                 id = elements - j
@@ -18,4 +18,4 @@ def createZigzag(listCount, elements, starting = 0):
     return(mainList)
 
 
-print(createZigzag(4,3,4))
+print(createZigzag(4,3,4)) #test output
