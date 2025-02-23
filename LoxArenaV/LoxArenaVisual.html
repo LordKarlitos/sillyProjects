@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Ekwipunek</h2>
+    <div id="inventoryParent">
+
+    </div> 
+    <div id="craftingParent">
+        
+    </div>
+    <script>
+        const inventoryParent = document.getElementById("inventoryParent");
+        const craftingParent = document.getElementById("craftingParent");
+        const items = [
+                        {'id': 0,
+                            'name':'Opiłki żelaza',
+                            'image':'irontrash',
+                            'info':'Odłamki żelaza, potrzebne do tworzenia wielu przedmiotów.'
+                        },
+                        {'id': 1,
+                            'name':'Żelazne ostrze',
+                            'image':'ironknife',
+                            'info':'Najbardziej podstawowa broń. Zadaje 2 `żelazne` obrażenia tam gdzie upadnie.'
+                        }
+                    ]
+        const recipes = [[[1,1],[0,3]]];
+        const inventory = [0,0,0,0];
+        displayInventory();
+        displayCrafting();
+
+
+        function displayInventory(){
+            inventoryParent.innerHTML = "";
+            for(let i = 0; i < inventory.length ;i++){
+                const item = document.createElement("div");
+                item.innerHTML = "<h3>" + items[inventory[i]].name + "</h3> <img src='" + items[inventory[i]].image +".png'>";
+                item.innerHTML += "<button onclick='deleteFromInventory("+i+")'>Wyrzuć</button>";
+                item.innerHTML += "<button onclick='displayItemInfo("+inventory[i]+")'>Info</button>";
+                item.classList += "inventoryItemDiv";
+
+                inventoryParent.append(item);
+            }
+        }
+
+        function displayItemInfo(itemID){
+            alert(items[itemID].info);
+        }
+
+        function craftItem(craftingID){
+            let msg = "Nie udało się stworzyć przedmiotu z powodu brakujących zasobów: ";
+            let usedIndexes = [];
+            for(let i = 1; i < recipes[craftingID].length; i++){
+                counter = 0;
+                for(let j = 0 ; j < inventory.length; j++){
+                    if(recipes[craftingID][i][0] == inventory[i]){
+                        if(recipes[craftingID][i][1] > counter){
+                            usedIndexes.push(j);
+                        }
+                        counter++;
+                    }
+                }
+                if(recipes[craftingID][i][1] > counter){
+                    msg += items[recipes[craftingID][i][0]].name + ", ";
+                }
+            }
+            if(msg != "Nie udało się stworzyć przedmiotu z powodu brakujących zasobów: "){
+                alert(msg);
+            }else{
+                for(let i = 0;i < inventory.length; i++){
+                    for(let j = 0;j < usedIndexes.length; j++){
+                        if(i == usedIndexes[j]){
+                            inventory[i] = -1
+                        }
+                    }
+                }
+                let i = 0;
+                while(i < inventory.length){
+                    if(inventory[i] == -1){
+                        inventory.splice(i,1);
+                    }else{
+                        i++;
+                    }
+                }
+                console.log(inventory)
+            }
+            displayInventory();
+        }
+
+        function displayCrafting(){
+            craftingParent.innerHTML = "";
+            for(let i = 0; i < recipes.length ;i++){
+                const recipe = document.createElement("div");
+                recipe.classList += "craftingRecipeDiv";
+                recipe.innerHTML = "<h3>"+ items[recipes[i][0][0]].name +"</h3><img src='" + items[recipes[i][0][0]].image +".png'>";
+                recipe.innerHTML += "<button onclick='displayItemInfo("+recipes[i][0][0]+")'>Info</button>";
+                recipe.innerHTML += "<button onclick='craftItem("+i+")'>Stwórz</button>";
+                recipe.innerHTML += "<h4>Wymagane zasoby: </h4>"
+
+                for(let j = 0; j < recipes[i].length; j++){
+                    counter = 0;
+                    for(let k = 0; k < recipes[i][j][1] ;k++){
+                        counter++;
+                    }
+                    if(j != 0){
+                        recipe.innerHTML += "<p>" + counter + " x " + items[recipes[i][j][0]].name + "</p>";
+                    }
+                    }
+                craftingParent.append(recipe);
+            }
+        }
+
+
+        function deleteFromInventory(atIndex){
+            inventory.splice(atIndex,1);
+            displayInventory();
+        }
+    </script>
+</body>
+</html>
